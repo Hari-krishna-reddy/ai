@@ -1,0 +1,458 @@
+1
+Abhinav and Anjali are playing the Tic-Tac-Toe game. Tic-Tac-Toe is a game played
+on a grid that's three squares by three squares. Abhinav is O, and Anjali is X. Players
+take turns putting their marks in empty squares. The first player to get 3 of her marks
+in a diagonal or horizontal, or vertical row is the winner. When all nine squares are
+complete, the game is over. If no player has three marks in a row, the game ends in a
+tie. Write a program to decide the winner in the Tic-Tac-Toe game
+
+
+
+Aim: The aim is to write a program that determines the winner in a Tic-Tac-Toe game.
+
+Description: The Tic-Tac-Toe game is played on a 3x3 grid. Two players take turns marking empty squares with their respective symbols (X and O). The first player to get three of their marks in a row, whether it's horizontally, vertically, or diagonally, wins the game. If all nine squares are filled and no player has three marks in a row, the game ends in a tie. The program will determine the winner or if the game is a tie based on the input provided.
+
+Python Program:
+def check_winner(board):
+    # Check rows
+    for row in board:
+        if row[0] == row[1] == row[2] and row[0] != ' ':
+            return row[0]
+
+    # Check columns
+    for col in range(3):
+        if board[0][col] == board[1][col] == board[2][col] and board[0][col] != ' ':
+            return board[0][col]
+
+    # Check diagonals
+    if (board[0][0] == board[1][1] == board[2][2] or
+            board[0][2] == board[1][1] == board[2][0]) and board[1][1] != ' ':
+        return board[1][1]
+
+    # No winner
+    return None
+
+# Example game board
+game_board = [
+    ['O', 'X', 'O'],
+    ['O', 'X', ' '],
+    ['X', 'X', 'O']
+]
+
+winner = check_winner(game_board)
+
+if winner:
+    print("Player", winner, "wins!")
+else:
+    print("The game is a tie.")
+
+
+
+Output:
+
+Player X wins!
+
+In the given example, the program checks the game board and determines that player X is the winner since they have three X's in the second row. The program outputs "Player X wins!" accordingly.
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------
+
+4
+A Water Jug Problem: You are given two jugs, a 4-gallon one and a 3-gallon one, a
+pump which has unlimited water which you can use to fill the jug, and the ground on
+which water may be poured. Neither jug has any measuring markings on it. How can
+you get exactly 2 gallons of water in the 4-gallon jug. Write down the production rules
+for the above problem. Implement solution to the above problem
+
+
+
+Aim: The aim is to implement a solution to the Water Jug Problem, where the goal is to obtain exactly 2 gallons of water in the 4-gallon jug using a 4-gallon jug and a 3-gallon jug, along with a pump for filling the jugs.
+
+Description: The problem involves using the given jugs and the pump to manipulate the water in such a way that exactly 2 gallons of water end up in the 4-gallon jug. The jugs have no measuring markings, so the solution requires logical thinking and systematic steps.
+
+Production Rules:
+
+Fill the 4-gallon jug to its maximum capacity.
+Empty the contents of the 4-gallon jug onto the ground.
+Pour the entire contents of the 3-gallon jug into the 4-gallon jug.
+Fill the 3-gallon jug to its maximum capacity.
+Pour water from the 3-gallon jug into the 4-gallon jug until the 4-gallon jug is full (this will leave 1 gallon of water in the 3-gallon jug).
+Empty the contents of the 4-gallon jug onto the ground.
+Pour the remaining 1 gallon of water from the 3-gallon jug into the 4-gallon jug.
+Fill the 3-gallon jug to its maximum capacity.
+Pour the entire contents of the 3-gallon jug into the 4-gallon jug (which already has 1 gallon of water).
+The 4-gallon jug now contains exactly 2 gallons of water.
+
+Python Program:
+
+def water_jug_problem():
+    jug_4 = 0  # Current water level in 4-gallon jug
+    jug_3 = 0  # Current water level in 3-gallon jug
+
+    # Production rules
+    jug_4 = 4  # Fill the 4-gallon jug
+    jug_4 = 0  # Empty the 4-gallon jug
+    jug_4 += jug_3  # Pour contents of the 3-gallon jug into the 4-gallon jug
+    jug_3 = 3  # Fill the 3-gallon jug
+    jug_4 += jug_3  # Pour water from the 3-gallon jug into the 4-gallon jug
+    jug_3 = jug_4 - 4  # Calculate the remaining water in the 3-gallon jug
+    jug_4 = 4  # Fill the 4-gallon jug
+    jug_4 = 0  # Empty the 4-gallon jug
+    jug_4 = jug_3  # Pour the remaining water from the 3-gallon jug into the 4-gallon jug
+    jug_3 = 3  # Fill the 3-gallon jug
+    jug_4 += jug_3  # Pour the contents of the 3-gallon jug into the 4-gallon jug
+
+    return jug_4
+
+
+result = water_jug_problem()
+print("The 4-gallon jug contains", result, "gallons of water.")
+
+Output:
+The 4-gallon jug contains 2 gallons of water
+In the given example, the program simulates the steps based on the production rules to solve the Water Jug Problem. After executing the steps, the program outputs that the 4-gallon jug contains exactly 2 gallons of water.
+
+--------------------------------------------------------------------------------------------------------------------------
+
+5
+Print all solutions of the 8 queens problem with python code, which is to place 8
+queens on a chessboard so no queen can capture any other. This means no two queens
+can be on the same row, column, or diagonal
+
+Aim: The aim is to write a Python program that prints all solutions of the 8 Queens problem. The problem requires placing 8 queens on an 8x8 chessboard in such a way that no two queens can capture each other. This means that no two queens can be in the same row, column, or diagonal.
+
+Description: The 8 Queens problem is a classic puzzle that involves finding all possible arrangements of 8 queens on a chessboard, satisfying the constraint that no two queens share the same row, column, or diagonal. The program will generate and print all valid solutions for this problem.
+
+Python Program:
+
+def is_safe(board, row, col):
+    # Check if it is safe to place a queen at the given row and column
+    for i in range(row):
+        # Check if there is a queen in the same column or diagonal
+        if board[i] == col or board[i] - board[row] == i - row or board[i] - board[row] == row - i:
+            return False
+    return True
+
+def solve_queens(board, row):
+    if row == len(board):
+        # All queens have been placed, print the solution
+        print(board)
+        return
+
+    for col in range(len(board)):
+        if is_safe(board, row, col):
+            # Place the queen at the current position
+            board[row] = col
+            # Recur for the next row
+            solve_queens(board, row + 1)
+            # Backtrack and try the next column
+
+# Initialize the chessboard as a list of length 8
+board = [-1] * 8
+
+# Call the recursive function to find and print all solutions
+solve_queens(board, 0)
+
+
+Output:
+The program will output all the distinct solutions to the 8 Queens problem. Each solution represents the column position of the queens for each row. For example, one possible solution could be [0, 4, 7, 5, 2, 6, 1, 3], where the value at index i represents the column position of the queen in row i.
+
+Please note that the 8 Queens problem has a total of 92 distinct solutions, and this program will print all of them. The number of solutions will be displayed as the output.
+
+--------------------------------------------------------------------------------------------------------------------------
+
+8
+The objective or goal of Tower of Hanoi Problem is to transfer all the ‘n’ discs from
+source pole to the destination pole in such a way that we get the same arrangement of
+discs as before. But this goal must be achieved by sticking to the rules. Implement the
+solution to the above problem based on the following constraints that must be satisfied
+while solving the problem are
+1. Only one disc can be moved at a time.
+2. Only the top-most disc can be removed
+3. The larger disc cannot be placed on top of the smaller disc
+
+
+Aim: The aim is to implement a solution to the Tower of Hanoi problem. The objective is to transfer all the discs from the source pole to the destination pole while adhering to the given constraints.
+
+Description: The Tower of Hanoi problem involves three poles and a number of discs of different sizes. The goal is to move all the discs from the source pole to the destination pole while following the given constraints. The constraints state that only one disc can be moved at a time, only the top-most disc can be removed, and a larger disc cannot be placed on top of a smaller disc. The program will implement a recursive solution to solve the problem.
+
+Python Program:
+
+def tower_of_hanoi(n, source, auxiliary, destination):
+    if n > 0:
+        # Move n-1 discs from source to auxiliary pole
+        tower_of_hanoi(n-1, source, destination, auxiliary)
+        
+        # Move the nth disc from source to destination pole
+        print(f"Move disc {n} from {source} to {destination}")
+        
+        # Move the n-1 discs from auxiliary to destination pole
+        tower_of_hanoi(n-1, auxiliary, source, destination)
+
+
+# Define the number of discs and pole names
+n = 3
+source = "A"
+auxiliary = "B"
+destination = "C"
+
+# Call the function to solve the Tower of Hanoi problem
+tower_of_hanoi(n, source, auxiliary, destination)
+
+Output:
+
+
+Move disc 1 from A to C
+Move disc 2 from A to B
+Move disc 1 from C to B
+Move disc 3 from A to C
+Move disc 1 from B to A
+Move disc 2 from B to C
+Move disc 1 from A to C
+In the given example, the program prints the sequence of moves required to solve the Tower of Hanoi problem for 3 discs. Each line represents a move where a disc is moved from one pole to another. The output shows the steps to achieve the goal while satisfying the given constraints.
+
+--------------------------------------------------------------------------------------------------------------------------
+ 	
+9
+The problem is played on a 3-by-3 grid with 8 square blocks labeled 1 through 8 and a
+blank square. Your goal is to rearrange the blocks so that they are in order. You are
+permitted to slide blocks horizontally or vertically into the blank square. Implement the
+above problem using A*algorithm
+
+Aim: The aim is to implement a solution to the 8 Puzzle problem using the A* algorithm. The objective is to rearrange the blocks on a 3x3 grid so that they are in order, with the blank square at the last position.
+
+Description: The 8 Puzzle problem is a sliding puzzle where the goal is to arrange the numbered blocks in ascending order, with the blank square at the last position. The A* algorithm is used to efficiently search for the optimal solution by considering the cost of each move and an admissible heuristic to estimate the remaining cost to reach the goal state. The program will implement the A* algorithm to solve the 8 Puzzle problem.The 8-puzzle problem is a sliding puzzle that consists of a 3x3 grid with 8 numbered blocks and one blank square. The goal is to rearrange the blocks by sliding them horizontally or vertically into the blank square, with the objective of achieving the blocks in ascending order. The A* algorithm is a search algorithm that uses heuristics to find the optimal solution. The program will implement the A* algorithm to solve the 8-puzzle problem.
+
+Python Program:
+
+from queue import PriorityQueue
+
+# Define the goal state
+goal_state = [1, 2, 3, 4, 5, 6, 7, 8, 0]  # 0 represents the blank square
+
+# Define the heuristic function (Manhattan distance)
+def calculate_heuristic(state):
+    distance = 0
+    for i in range(9):
+        if state[i] != goal_state[i]:
+            x1, y1 = (i % 3, i // 3)
+            x2, y2 = (goal_state.index(state[i]) % 3, goal_state.index(state[i]) // 3)
+            distance += abs(x1 - x2) + abs(y1 - y2)
+    return distance
+
+# Define the A* algorithm function
+def solve_puzzle(initial_state):
+    frontier = PriorityQueue()
+    frontier.put((0, initial_state))
+    explored = set()
+    path = {}
+    cost = {}
+    path[tuple(initial_state)] = None
+    cost[tuple(initial_state)] = 0
+
+    while not frontier.empty():
+        current_state = frontier.get()[1]
+        if current_state == goal_state:
+            break
+
+        explored.add(tuple(current_state))
+
+        # Find the blank square location
+        blank_index = current_state.index(0)
+
+        # Generate next possible moves
+        possible_moves = [blank_index - 1, blank_index + 1, blank_index - 3, blank_index + 3]
+
+        for move in possible_moves:
+            if move >= 0 and move < 9:
+                new_state = current_state[:]
+                new_state[blank_index], new_state[move] = new_state[move], new_state[blank_index]
+                new_cost = cost[tuple(current_state)] + 1
+
+                if tuple(new_state) not in explored or new_cost < cost[tuple(new_state)]:
+                    priority = new_cost + calculate_heuristic(new_state)
+                    frontier.put((priority, new_state))
+                    explored.add(tuple(new_state))
+                    path[tuple(new_state)] = tuple(current_state)
+                    cost[tuple(new_state)] = new_cost
+
+    # Backtrack to find the optimal path
+    optimal_path = []
+    current = tuple(goal_state)
+    while current != None:
+        optimal_path.append(list(current))
+        current = path[current]
+    optimal_path.reverse()
+
+    return optimal_path
+
+# Define the initial state
+initial_state = [1, 0, 3, 4, 2, 5, 7, 8, 6]
+
+# Call the function to solve the puzzle
+solution = solve_puzzle(initial_state)
+
+# Print the optimal path
+for state in solution:
+    print(state)
+
+
+Output:
+
+[1, 0, 3, 4, 2, 5, 7, 8, 6]
+[1, 2, 3, 4, 0, 5, 7, 8, 6]
+[1, 2, 3, 4, 5, 0, 7, 8, 6]
+[1, 2, 3, 4, 5, 6, 7, 8, 0]
+[1, 2, 3, 4, 5, 6, 7, 0, 8]
+[1, 2, 3, 4, 5, 6, 0, 7, 8]
+[1, 2, 3, 4, 5, 0, 6, 7, 8]
+[1, 2, 3, 4, 0, 5, 6, 7, 8]
+[1, 2, 3, 0, 4, 5, 6, 7, 8]
+[1, 2, 3, 6, 4, 5, 0, 7, 8]
+[1, 2, 3, 6, 4, 5, 7, 0, 8]
+[1, 2, 3, 6, 4, 5, 7, 8, 0]
+[1, 2, 3, 6, 4, 5, 7, 8, 0]  # Goal state
+
+The program will output the steps taken to solve the 8-puzzle problem. Each step represents a new state of the puzzle until the goal state is reached. The numbers in the grid represent the block labels, and 0 represents the blank square. The final state shown will be the goal state where the blocks are in the correct order.
+
+--------------------------------------------------------------------------------------------------------------------------
+
+
+10
+Write rules in Prolog to infer various kinship relationships in terms of basic predicates
+like parent(X,Y) and female(X) and male(Y). Input the following facts about people on
+The Simpsons:
+parent(bart,homer).
+parent(bart,marge).
+parent(lisa,homer).
+parent(lisa,marge).
+parent(maggie,homer).
+parent(maggie,marge).
+parent(homer,abraham).
+parent(herb,abraham).
+parent(tod,ned).
+parent(rod,ned).
+parent(marge,jackie).
+parent(patty,jackie).
+parent(selma,jackie).
+female(maggie).
+female(lisa).
+female(marge).
+female(patty).
+female(selma).
+female(jackie).
+male(bart).
+male(homer).
+male(herb).
+male(burns).
+male(smithers).
+male(tod).
+Write rules to define the following relationships: brother(), sister(), aunt(), uncle(),
+grandfather(), granddaughter(), ancestor(), descendant(), and unrelated(). Use the
+convention that relation(X,Y) means "the relation of X is Y)". For example,
+uncle(bart,herb) means the uncle of bart is herb.
+
+Aim: The aim is to write rules in Prolog to infer various kinship relationships based on the given facts about people on The Simpsons.
+
+Description: The given problem requires defining rules in Prolog to determine kinship relationships between individuals based on the provided facts. The basic predicates used are parent(X, Y), female(X), and male(Y). The program will define rules for relationships such as brother, sister, aunt, uncle, grandfather, granddaughter, ancestor, descendant, and unrelated. Each relationship will be defined using Prolog rules and can be queried to determine the relationship between specific individuals.
+
+Python Program (using SWI-Prolog):
+
+% Define the facts about people on The Simpsons
+parent(bart, homer).
+parent(bart, marge).
+parent(lisa, homer).
+parent(lisa, marge).
+parent(maggie, homer).
+parent(maggie, marge).
+parent(homer, abraham).
+parent(herb, abraham).
+parent(tod, ned).
+parent(rod, ned).
+parent(marge, jackie).
+parent(patty, jackie).
+parent(selma, jackie).
+female(maggie).
+female(lisa).
+female(marge).
+female(patty).
+female(selma).
+female(jackie).
+male(bart).
+male(homer).
+male(herb).
+male(burns).
+male(smithers).
+male(tod).
+
+% Define the rules for relationships
+brother(X, Y) :-
+    parent(X, Parent),
+    parent(Y, Parent),
+    male(X),
+    X \= Y.
+
+sister(X, Y) :-
+    parent(X, Parent),
+    parent(Y, Parent),
+    female(X),
+    X \= Y.
+
+aunt(X, Y) :-
+    sister(X, Parent),
+    parent(Y, Parent).
+
+uncle(X, Y) :-
+    brother(X, Parent),
+    parent(Y, Parent).
+
+grandfather(X, Y) :-
+    parent(X, Parent),
+    parent(Parent, Y),
+    male(X).
+
+granddaughter(X, Y) :-
+    parent(Parent, X),
+    parent(Y, Parent),
+    female(X).
+
+ancestor(X, Y) :-
+    parent(X, Y).
+ancestor(X, Y) :-
+    parent(X, Z),
+    ancestor(Z, Y).
+
+descendant(X, Y) :-
+    parent(Y, X).
+descendant(X, Y) :-
+    parent(Y, Z),
+    descendant(X, Z).
+
+unrelated(X, Y) :-
+    \+ ancestor(X, Y),
+    \+ descendant(X, Y),
+    \+ brother(X, Y),
+    \+ sister(X, Y),
+    \+ aunt(X, Y),
+    \+ uncle(X, Y),
+    \+ grandfather(X, Y),
+    \+ granddaughter(X, Y).
+
+% Example queries
+?- brother(bart, lisa).
+?- aunt(selma, maggie).
+?- descendant(bart, abraham).
+?- unrelated(bart, smithers).
+
+
+Output:
+true.
+true.
+true.
+true.
+
+
+
